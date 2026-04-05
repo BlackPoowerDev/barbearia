@@ -39,8 +39,7 @@ const AuthPage = () => {
     if (isLogin) {
       try {
         const response = await api.post("/v1/barbers/login", {
-          method: "POST",
-          data: { ...data },
+          ...data,
         });
 
         if (response.data.status) {
