@@ -79,7 +79,7 @@ const ClientesPage = () => {
     const data = Object.fromEntries(formData.entries());
 
     try {
-      const create = await api.post(`/users/create/${user?.id}`, data);
+      const create = await api.post(`/v1/users/create/${user?.id}`, data);
 
       if (create.data.status) {
         const response = await api.get(`/v1/users/${user.id}`);
