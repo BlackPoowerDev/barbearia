@@ -1,4 +1,5 @@
-import { useState, useContext, useEffect } from "react";
+import { useMemo, useCallback, useState, useEffect, useContext } from "react";
+
 import { motion } from "framer-motion";
 import {
   Users,
@@ -47,52 +48,51 @@ const statusColor: Record<string, string> = {
 const ClientesPage = () => {
   const { user } = useContext(AuthContext);
   const [open, setOpen] = useState(false);
-  const [clients, setClients] = useState(mockClients);
+  const [clients, setClients] = useState([]);
+  const [search, setSearch] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    async function loadClients() {
-      if (!user?.id) return;
-
-      try {
-        const response = await api.get(`/v1/users/${user.id}`);
-        if (response.data && response.data.user) {
-          setClients(response.data.user);
-        }
-      } catch (error) {
-        toast.error(error.response.data.mensagem || "Erro ao buscar clientes");
-      }
+  // Função de busca separada para ser reutilizável
+  const fetchClients = useCallback(async () => {
+    if (!user?.id) return;
+    try {
+      setLoading(true);
+      const { data } = await api.get(`/v1/users/${user.id}`);
+      if (data?.user) setClients(data.user);
+    } catch (error) {
+      toast.error("Erro ao buscar clientes");
+    } finally {
+      setLoading(false);
     }
-
-    loadClients();
   }, [user?.id]);
 
-  const [search, setSearch] = useState("");
-  const filtered = clients.filter(
-    (c) =>
-      c.nome.toLowerCase().includes(search.toLowerCase()) ||
-      c.email.toLowerCase().includes(search.toLowerCase()),
-  );
+  useEffect(() => {
+    fetchClients();
+  }, [fetchClients]);
+
+  // Filtro otimizado
+  const filtered = useMemo(() => {
+    const term = search.toLowerCase();
+    return clients.filter(
+      (c) =>
+        c.nome?.toLowerCase().includes(term) ||
+        c.email?.toLowerCase().includes(term),
+    );
+  }, [clients, search]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const data = Object.fromEntries(formData.entries());
+    const data = Object.fromEntries(new FormData(e.currentTarget));
 
     try {
-      const create = await api.post(`/v1/users/create/${user?.id}`, data);
-
-      if (create.data.status) {
-        const response = await api.get(`/v1/users/${user.id}`);
-        if (response.data && response.data.user) {
-          setClients(response.data.user);
-          setOpen(false);
-          toast.success("Cliente adicionado com sucesso!");
-        }
+      const res = await api.post(`/v1/users/create/${user?.id}`, data);
+      if (res.data.status) {
+        await fetchClients();
+        setOpen(false);
+        toast.success("Cliente adicionado!");
       }
     } catch (error) {
-      console.log(error);
-
-      toast.error(error.response.data.error || "Erro ao adicionar cliente");
+      toast.error("Erro ao salvar");
     }
   };
 
