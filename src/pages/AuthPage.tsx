@@ -58,7 +58,7 @@ const AuthPage = () => {
       } catch (error) {
         setLoading(false);
         console.log(error.response.data);
-        toast.error(error.response.data.mensagem || "Erro ao realizar login", {
+        toast.error(error.response.data.error || "Erro ao realizar login", {
           className: "!bg-red-600 !text-white !border-red-700",
           duration: 2000,
         });
