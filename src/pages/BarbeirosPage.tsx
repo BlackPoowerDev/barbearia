@@ -42,7 +42,7 @@ const BarbeirosPage = () => {
       if (!user?.id) return;
 
       try {
-        const response = await api.get(`/v1/barber/${user.id}`);
+        const response = await api.get(`/v1/barber`);
         if (response.data) {
           setBarbers(response.data?.barber);
         }
@@ -51,7 +51,7 @@ const BarbeirosPage = () => {
       }
     }
     loadBarbers();
-  }, [user?.id]);
+  });
 
   async function createBarber(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
