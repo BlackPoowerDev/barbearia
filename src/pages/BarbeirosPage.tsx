@@ -11,6 +11,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { toast } from "sonner";
+
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
@@ -64,7 +66,8 @@ const BarbeirosPage = () => {
 
       console.log(res);
     } catch (error) {
-      console.log(error);
+      console.log(error.response.data);
+      toast.error(error.response.data.error);
     }
   }
 
