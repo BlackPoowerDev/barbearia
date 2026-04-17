@@ -49,7 +49,7 @@ const BarbeirosPage = () => {
       }
     }
     loadBarbers();
-  });
+  }, []);
 
   async function createBarber(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
