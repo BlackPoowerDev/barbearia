@@ -40,7 +40,7 @@ const BarbeirosPage = () => {
       if (!user?.id) return;
 
       try {
-        const response = await api.get(`/v1/barbers/${user.id}`);
+        const response = await api.get(`/v1/barber/${user.id}`);
         if (response.data) {
           setBarbers(response.data?.barber);
         }
@@ -60,7 +60,7 @@ const BarbeirosPage = () => {
     if (!data) return false;
 
     try {
-      const res = await api.post(`/v1/barbers/create/barber/${user?.id}`, data);
+      const res = await api.post(`/v1/barber/create/${user?.id}`, data);
 
       console.log(res);
     } catch (error) {

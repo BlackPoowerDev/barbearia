@@ -53,48 +53,48 @@ const ClientesPage = () => {
   const [loading, setLoading] = useState(false);
 
   // Função de busca separada para ser reutilizável
-  const fetchClients = useCallback(async () => {
-    if (!user?.id) return;
-    try {
-      setLoading(true);
-      const { data } = await api.get(`/v1/users/${user.id}`);
-      if (data?.user) setClients(data.user);
-    } catch (error) {
-      toast.error("Erro ao buscar clientes");
-    } finally {
-      setLoading(false);
-    }
-  }, [user?.id]);
+  // const fetchClients = useCallback(async () => {
+  //   if (!user?.id) return;
+  //   try {
+  //     setLoading(true);
+  //     const { data } = await api.get(`/v1/users/${user.id}`);
+  //     if (data?.user) setClients(data.user);
+  //   } catch (error) {
+  //     toast.error("Erro ao buscar clientes");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // }, [user?.id]);
 
-  useEffect(() => {
-    fetchClients();
-  }, [fetchClients]);
+  // useEffect(() => {
+  //   fetchClients();
+  // }, [fetchClients]);
 
-  // Filtro otimizado
-  const filtered = useMemo(() => {
-    const term = search.toLowerCase();
-    return clients.filter(
-      (c) =>
-        c.nome?.toLowerCase().includes(term) ||
-        c.email?.toLowerCase().includes(term),
-    );
-  }, [clients, search]);
+  // // Filtro otimizado
+  // const filtered = useMemo(() => {
+  //   const term = search.toLowerCase();
+  //   return clients.filter(
+  //     (c) =>
+  //       c.nome?.toLowerCase().includes(term) ||
+  //       c.email?.toLowerCase().includes(term),
+  //   );
+  // }, [clients, search]);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const data = Object.fromEntries(new FormData(e.currentTarget));
+  // const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   const data = Object.fromEntries(new FormData(e.currentTarget));
 
-    try {
-      const res = await api.post(`/v1/users/create/${user?.id}`, data);
-      if (res.data.status) {
-        await fetchClients();
-        setOpen(false);
-        toast.success("Cliente adicionado!");
-      }
-    } catch (error) {
-      toast.error("Erro ao salvar");
-    }
-  };
+  //   try {
+  //     const res = await api.post(`/v1/users/create/${user?.id}`, data);
+  //     if (res.data.status) {
+  //       await fetchClients();
+  //       setOpen(false);
+  //       toast.success("Cliente adicionado!");
+  //     }
+  //   } catch (error) {
+  //     toast.error("Erro ao salvar");
+  //   }
+  // };
 
   return (
     <div className="space-y-6">
@@ -126,7 +126,7 @@ const ClientesPage = () => {
               </DialogHeader>
               <motion.form
                 variants={fadeUp}
-                onSubmit={handleSubmit}
+                // onSubmit={handleSubmit}
                 className="space-y-4 pt-2"
               >
                 <div className="space-y-2">
@@ -193,7 +193,7 @@ const ClientesPage = () => {
           </DialogHeader>
           <motion.form
             variants={fadeUp}
-            onSubmit={handleSubmit}
+            // onSubmit={handleSubmit}
             className="space-y-4 pt-2"
           >
             <div className="space-y-2">
@@ -263,14 +263,13 @@ const ClientesPage = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-border">
-              {filtered.map((client) => (
+              {/* {filtered.map((client) => (
                 <tr
                   key={client.id}
                   className="transition-colors hover:bg-muted/30"
                 >
                   <td className="px-5 py-4">
                     <div className="flex items-center gap-3">
-                      {/* Avatar com Multiavatar */}
                       <div className="h-10 w-10 shrink-0 rounded-full border-2 border-border overflow-hidden">
                         <img
                           src={`https://api.dicebear.com/9.x/dylan/svg?seed=${client.id}&backgroundColor=transparent&radius=50&hair=flatTop,spiky,plain,wavy,shortCurls&mood=superHappy`}
@@ -337,7 +336,7 @@ const ClientesPage = () => {
                       </DialogHeader>
                       <motion.form
                         variants={fadeUp}
-                        onSubmit={handleSubmit}
+                        // onSubmit={handleSubmit}
                         className="space-y-4 pt-2"
                       >
                         <div className="space-y-2">
@@ -380,13 +379,13 @@ const ClientesPage = () => {
                     </DialogContent>
                   </Dialog>
                 </tr>
-              ))}
+              ))} */}
             </tbody>
           </table>
         </div>
 
         {/* Mobile cards */}
-        <div className="md:hidden divide-y divide-border">
+        {/* <div className="md:hidden divide-y divide-border">
           {filtered.map((client) => (
             <div key={client.id} className="p-4 space-y-2">
               <div className="flex items-center justify-between">
@@ -438,16 +437,16 @@ const ClientesPage = () => {
               {/* <div className="flex flex-col text-xs text-muted-foreground">
                 
               </div> */}
-            </div>
+        {/* </div>
           ))}
-        </div>
+        </div> */}
 
-        {filtered.length === 0 && (
+        {/* {filtered.length === 0 && (
           <div className="flex flex-col items-center justify-center py-12 text-muted-foreground">
             <Users className="h-10 w-10 mb-2" />
             <p>Nenhum cliente encontrado.</p>
           </div>
-        )}
+        )} } */}
       </motion.div>
     </div>
   );

@@ -38,7 +38,7 @@ const AuthPage = () => {
 
     if (isLogin) {
       try {
-        const response = await api.post("/v1/barbers/login", {
+        const response = await api.post("/v1/barberShop/login", {
           ...data,
         });
 
@@ -65,7 +65,7 @@ const AuthPage = () => {
       }
     } else {
       try {
-        const response = await api.post("/v1/barbers/create", { ...data });
+        const response = await api.post("/v1/barberShop/create", { ...data });
 
         if (response.data.status) {
           setLoading(false);

@@ -32,7 +32,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
       if (token) {
         try {
-          const response = await api.get("/v1/barbers/validate");
+          const response = await api.get("/v1/barberShop/validate");
 
           setUser(response.data.user);
         } catch (error) {
