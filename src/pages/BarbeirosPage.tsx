@@ -39,8 +39,6 @@ const BarbeirosPage = () => {
 
   useEffect(() => {
     async function loadBarbers() {
-      if (!user?.id) return;
-
       try {
         const response = await api.get(`/v1/barber`);
         if (response.data) {
