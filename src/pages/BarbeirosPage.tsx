@@ -44,7 +44,7 @@ const BarbeirosPage = () => {
       try {
         const response = await api.get(`/v1/barber`);
         if (response.data) {
-          setBarbers(response.data?.barber);
+          setBarbers(response.data?.barbers);
         }
       } catch (err) {
         console.log(err);
