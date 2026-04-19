@@ -37,17 +37,18 @@ const BarbeirosPage = () => {
   const [barbers, setBarbers] = useState([]);
   const { user } = useContext(AuthContext);
 
-  useEffect(() => {
-    async function loadBarbers() {
-      try {
-        const response = await api.get(`/v1/barber`);
-        if (response.data) {
-          setBarbers(response.data?.barbers);
-        }
-      } catch (err) {
-        console.log(err);
+  async function loadBarbers() {
+    try {
+      const response = await api.get(`/v1/barber`);
+      if (response.data) {
+        setBarbers(response.data?.barbers);
       }
+    } catch (err) {
+      console.log(err);
     }
+  }
+
+  useEffect(() => {
     loadBarbers();
   }, []);
 
@@ -62,7 +63,9 @@ const BarbeirosPage = () => {
     try {
       const res = await api.post(`/v1/barber/create/${user?.id}`, data);
 
-      console.log(res);
+      if (res.data) {
+        loadBarbers();
+      }
     } catch (error) {
       console.log(error.response.data);
       toast.error(error.response.data.error);
